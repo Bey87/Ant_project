@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://b85am47by1gws"]
+
+[ext_resource type="Script" path="res://ant.gd" id="1_fn286"]
+[ext_resource type="Texture2D" uid="uid://cupgivx2usdt" path="res://atlas.png" id="1_i6ikt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wdt0s"]
+radius = 1.55353
+
+[node name="Ant" type="CharacterBody2D"]
+script = ExtResource("1_fn286")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("1_i6ikt")
+region_enabled = true
+region_rect = Rect2(18, 0, 12, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_wdt0s")
+
+[node name="state" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
