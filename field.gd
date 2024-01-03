@@ -1,26 +1,50 @@
 extends Node2D
 
-signal food_placed
+const ANT_SCENE = preload ("res://ant.tscn")
+const FOOD_SCENE = preload("res://food.tscn")
 
-var ant = preload ("res://ant.tscn")
+var food : int = 50 :
+	set(value):
+		food = value
+		%FoodStock.text = "FOOD: " + str(value)
+		
+var food_upkeep : float = 0:
+	set(value):
+		food_upkeep = value
+		%Consumition.text = "FOOD UPKEEP: " + str(value)
+
+var ants_amount : int = 0 :
+	set(value):
+		ants_amount = value
+		%Ants.text = "ANT AMOUNT: " + str(value)
+
 
 @onready var spawn: Marker2D = $Spawn
 @onready var timer: Timer = $Spawn/Timer
 @onready var tile_map: TileMap = $TileMap
 
 func _ready() -> void:
+	%FoodStock.text = "FOOD: " + str(food)
 	randomize()
 
-func _on_timer_timeout() -> void:
-	for X in 5:
-		var new_ant = ant.instantiate()
-		spawn.add_child(new_ant)
-		new_ant.global_position = spawn.global_position + Vector2 (randi_range(-15 , 15), randi_range(-15 , 15))
 
+func spawn_new_ant():
+	var new_ant = ANT_SCENE.instantiate()
+	spawn.add_child(new_ant)
+	new_ant.global_position = spawn.global_position + Vector2 (randi_range(-15 , 15), randi_range(-15 , 15))
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("right_click"):
-		var mouse_click_cell = tile_map.local_to_map(get_global_mouse_position())
-		tile_map.set_cell(1,mouse_click_cell,0, Vector2i(4,3),0)
-		emit_signal("food_placed",get_global_mouse_position())
+		spawn_food()
 		
+func spawn_food():
+	var new_food = FOOD_SCENE.instantiate()
+	%Food.add_child(new_food)
+	new_food.global_position = get_global_mouse_position()
+
+
+func _on_button_pressed() -> void:
+	spawn_new_ant()
+	food -= 5
+	food_upkeep += 0.2
+	ants_amount += 1

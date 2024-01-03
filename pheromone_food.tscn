@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8f4tbcuebg4k"]
+
+[ext_resource type="Script" path="res://pheromone_food.gd" id="1_4lnar"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_3hw8y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ypc2b"]
+size = Vector2(0, 0)
+
+[node name="PheromoneFood" type="StaticBody2D" groups=["PheromoneFood"]]
+modulate = Color(1, 0, 0, 1)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_4lnar")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("PlaceholderTexture2D_3hw8y")
+region_enabled = true
+region_rect = Rect2(0, 0, 1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ypc2b")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
